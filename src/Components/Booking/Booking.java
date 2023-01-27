@@ -1,5 +1,5 @@
 package Components.Booking;
 
-public class js {
+public class Booking {
 
 }
