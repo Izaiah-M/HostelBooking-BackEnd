@@ -73,8 +73,9 @@ public class Driver {
             int rowsAffected = prstmt.executeUpdate();
             System.out.println(rowsAffected + " row(s) affected.");
 
+            prstmt.close();
+
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e);
         }
 
