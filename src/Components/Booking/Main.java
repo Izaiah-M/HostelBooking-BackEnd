@@ -1,13 +1,39 @@
 package Components.Booking;
 
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
-        SignIn signIn = new SignIn("Izaiah", "Admin123");
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Welcome to HostMe!");
 
-        // If the sign in credentials are correct, show the hostel catalogues
-        // If they are false, prompt the user to signup of they haven't or ro re-enter
-        // their credentials
+            System.out.println("1. Sign in");
+            System.out.println("2. Sign up");
+
+            int answer = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (answer) {
+                case 1:
+                    System.out.println("Enter user name: ");
+                    String name = scanner.next();
+                    System.out.println("Enter password: ");
+                    String password = scanner.next();
+
+                    // Passing the given details to our signIn class for authentication.
+                    SignIn signin = new SignIn(name, password);
+
+                    break;
+
+                case 2:
+                    System.out.println("SIGN UPP!!");
+                    break;
+
+                default:
+                    break;
+            }
+        }
 
     }
 

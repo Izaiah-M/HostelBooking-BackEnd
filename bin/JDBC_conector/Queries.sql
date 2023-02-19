@@ -35,6 +35,7 @@ CREATE TABLE managers (
   manager_id INT PRIMARY KEY,
   manager_name VARCHAR(20),
   manager_email VARCHAR(20),
+  manager_password VARCHAR(30),
   hostel_id INT
 );
 
@@ -42,6 +43,7 @@ CREATE TABLE residents (
   resident_id int PRIMARY KEY,
   resident_name VARCHAR(20),
   resident_email VARCHAR(20),
+  resident_password VARCHAR(30),
   room_id INT,
   hostel_id INT,
   start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

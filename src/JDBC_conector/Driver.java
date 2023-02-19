@@ -5,6 +5,8 @@ import java.util.Scanner;
 // import java.util.logging.Level;
 // import java.util.logging.Logger;
 
+import Components.Booking.SignIn;
+
 public class Driver {
 
     private String username = "root";
@@ -12,15 +14,15 @@ public class Driver {
     Scanner scanner = new Scanner(System.in);
 
     // Getting Info method.
-    public void gettingInfo() {
+    public void authenticateUSer() {
 
-        System.out.println("Welcome to the Trial!!");
+        SignIn user = new SignIn();
 
         Statement statement; // runs SQL statement
         String output;
 
         ResultSet result; // Holds output from SQL
-        String SQL = "SELECT * FROM residents";
+        String SQL = "SELECT * FROM residents WHERE resident_name = ? AND resident_password = ?";
 
         try {
 
@@ -28,19 +30,23 @@ public class Driver {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/hostel_management_system";
             Connection dbConnection = DriverManager.getConnection(dbURL, username, password);
-            statement = dbConnection.createStatement(); // Allows SQL to be executed
+            PreparedStatement prstmt = dbConnection.prepareStatement(SQL); // Allows SQL to be executed
 
+            prstmt.setString(1, user.getUsername());
+            prstmt.setString(2, user.getPassword());
             // Running the query
-            result = statement.executeQuery(SQL); // Holds the output from sql
+            result = prstmt.executeQuery(SQL); // Holds the output from sql
 
-            while (result.next()) {
-                output = result.getString("resident_id") + " " + result.getString("resident_name") + " "
-                        + result.getString("resident_contact") + " " + result.getString("hostel_id") + " "
-                        + result.getString("room_no");
-                System.out.println(output);
-            }
+            // if (rs.next()) {
+            // String email = rs.getString("email");
+            // String password = rs.getString("password");
+            // System.out.println("Email: " + email);
+            // System.out.println("Password: " + password);
+            // } else {
+            // System.out.println("User not found");
+            // }
 
-            statement.close();
+            prstmt.close();
 
         } catch (Exception e) {
             System.out.println(e);
