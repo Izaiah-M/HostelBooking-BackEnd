@@ -1,18 +1,5 @@
-# from cs50 import SQL
-# import random
-
-# db = SQL("sqlite:///CakeShop.db")
-
-
-# for i in range(0,50):
-#     price = random.randrange(50000,1000000,100000)
-#     type = random.choice(types)
-#     flavour = random.choice(Flavours)
-#     icing = random.choice(icings)
-    
-#     db.execute("INSERT INTO Cakes(Type,Flavour,DateMade,Icing,Cost) VALUES(?,?,?,?,?);",type,flavour,date,icing,price)
-
 import mysql.connector
+import random
 
 # Connect to the database
 mydb = mysql.connector.connect(
@@ -31,18 +18,49 @@ else:
 # Perform database operations
 mycursor = mydb.cursor()
 
-# Execute a query
-mycursor.execute("SELECT * FROM hostel_table")
-
-# Fetch the results
-results = mycursor.fetchall()
-
-# Display the results
-for result in results:
-    print(result)
 
 
-mgr_name = ["Fruit Cake","Forest Cake","Sponge Cake","Basic Vanilla Cake"]
-mgr_contact = ["orange","marble","chocolate","vanilla"]
-icings = ["fondant","Whipped Cream","Butter Cream"]
-date = "6/12/2022"
+def generate_random_letters():
+    letters = list('abcdefghijklmnopqrstuvwxyz')
+    random_letters = []
+    
+    while len(random_letters) < 3:
+        letter = random.choice(letters)
+        if letter not in random_letters:
+            random_letters.append(letter)
+    
+    return ''.join(random_letters)
+
+def generate_random_passwords():
+    passwords = list('123456789abcdefghijklmnopqrstuvwxyz')
+    random_password = []
+    
+    while len(random_password) < 8:
+        letter = random.choice(passwords)
+        if letter not in random_password:
+            random_password.append(letter)
+    
+    return ''.join(random_password)
+
+def generate_random_email():
+    email = list('abcdefghijklmnopqrstuvwxyz')
+    random_email = []
+    
+    while len(random_email) < 6:
+        letter = random.choice(email)
+        if letter not in random_email:
+            random_email.append(letter)
+    
+    return ''.join(random_email) + "@mail.com"
+
+
+# Inserting the data into the database.
+def datagen():
+    for i in range(0, 10):
+        name = generate_random_letters()
+        password = generate_random_passwords()
+        email = generate_random_email()
+
+        mycursor.execute("INSERT INTO managers (manager_name, manager_email, manager_password) VALUES (?, ?, ?);", name, email, password)
+
+datagen()
