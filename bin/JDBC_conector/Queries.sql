@@ -77,7 +77,7 @@ SELECT * FROM managers;
 DELETE FROM hostels;
 
 -- To reset the PRIMARY key AUTO_INCREMENT
-ALTER TABLE residents AUTO_INCREMENT = 1;
+ALTER TABLE residents AUTO_INCREMENT = 66;
 
 INSERT INTO hostels_managers 
 VALUES
@@ -116,7 +116,25 @@ WHERE room_status = "Booked" AND hostel_id = 1;
 
 SELECT * FROM residents;
 
-DELETE FROM residents;
+-- DELETE FROM residents;
 
 SELECT COUNT(*) FROM rooms
-WHERE room_status = "Booked" AND hostel_id = 1 AND room_type LIKE "%Double%";
+WHERE room_status = "Booked" AND hostel_id = 10 AND room_type LIKE "%Single%";
+
+-- For Doubles
+SELECT COUNT(*) FROM rooms
+WHERE room_status = "Booked" AND hostel_id = 10 AND room_type LIKE "%Double%";
+
+SELECT COUNT(*) FROM rooms
+WHERE room_status = "Booked";
+
+-- DELETE FROM residents
+-- WHERE hostel_id = 5;
+
+UPDATE rooms SET price = 2500000 WHERE room_type = 'Double self contained';
+
+SELECT * FROM rooms;
+SELECT * FROM hostels;
+SELECT * FROM hostels_managers;
+SELECT * FROM managers;
+SELECT * FROM residents;

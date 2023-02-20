@@ -86,14 +86,14 @@ def datagen():
 # datagen()
 # Querying info from the database
 def getting_rooms_singles():
-    mycursor.execute("SELECT room_id FROM rooms WHERE hostel_id = 1 AND room_status = 'Booked' AND room_type LIKE '%Single%'")
+    mycursor.execute("SELECT room_id FROM rooms WHERE hostel_id = 10 AND room_status = 'Booked' AND room_type LIKE '%Single%'")
     rows = [tup[0] for tup in mycursor.fetchall()]
     
     return rows
 # print(getting_rooms_singles())
 
 def getting_rooms_doubles():
-    mycursor.execute("SELECT room_id FROM rooms WHERE hostel_id = 1 AND room_status = 'Booked' AND room_type LIKE '%Double%'")
+    mycursor.execute("SELECT room_id FROM rooms WHERE hostel_id = 10 AND room_status = 'Booked' AND room_type LIKE '%Double%'")
     rows = [tup[0] for tup in mycursor.fetchall()]
     
     return rows
@@ -112,20 +112,6 @@ def generate_room_double(assigned_rooms):
     assigned_rooms.append(choiceDouble)
     return choiceDouble
 
-"""def generate_residents_doubles(num_residents):
-    residents = []
-    assigned_rooms = []
-
-    for i in range(num_residents):
-        name = generate_random_letters()
-        email = generate_random_email()
-        password = generate_random_passwords()
-        room_id = generate_room_double(assigned_rooms)
-
-        if room_id:
-            residents.append((name, email, password, room_id, 1))
-
-    return residents"""
 
 def generate_residents_doubles(num_residents):
     residents = []
@@ -143,7 +129,7 @@ def generate_residents_doubles(num_residents):
             # use the same room ID as the previous resident
             room_id = assigned_rooms[-1]
 
-        residents.append((name, email, password, room_id, 1))
+        residents.append((name, email, password, room_id, 10))
         assigned_rooms.append(room_id)
 
     return residents
@@ -169,7 +155,7 @@ def generate_residents_singles(num_residents):
         password = generate_random_passwords()
         room_id = assigned_rooms[i]
 
-        residents.append((name, email, password, room_id, 1))
+        residents.append((name, email, password, room_id, 10))
 
     return residents
 
@@ -180,7 +166,7 @@ def generate_residents_singles(num_residents):
 
 # Inserting the data into the database
 def into_residents():
-    residents = generate_residents_doubles(9)
+    residents = generate_residents_doubles(18)
     query = "INSERT INTO residents (resident_name, resident_email, resident_password, room_id, hostel_id) VALUES (%s, %s, %s, %s, %s);"
     mycursor.executemany(query, residents)
     mydb.commit()
