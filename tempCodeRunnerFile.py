@@ -1,0 +1,2 @@
+
+print(getting_rooms())

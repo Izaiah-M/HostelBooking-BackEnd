@@ -114,6 +114,9 @@ WHERE room_status = "Booked" AND hostel_id = 1;
 
 -- 2....21, 60
 
-SELECT * FROM hostels;
+SELECT * FROM residents;
 
-DELETE FROM residents
+DELETE FROM residents;
+
+SELECT COUNT(*) FROM rooms
+WHERE room_status = "Booked" AND hostel_id = 1 AND room_type LIKE "%Double%";

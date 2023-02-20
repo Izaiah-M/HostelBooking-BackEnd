@@ -84,31 +84,106 @@ def datagen():
         mydb.commit()
 
 # datagen()
+# Querying info from the database
+def getting_rooms_singles():
+    mycursor.execute("SELECT room_id FROM rooms WHERE hostel_id = 1 AND room_status = 'Booked' AND room_type LIKE '%Single%'")
+    rows = [tup[0] for tup in mycursor.fetchall()]
+    
+    return rows
+# print(getting_rooms_singles())
 
+def getting_rooms_doubles():
+    mycursor.execute("SELECT room_id FROM rooms WHERE hostel_id = 1 AND room_status = 'Booked' AND room_type LIKE '%Double%'")
+    rows = [tup[0] for tup in mycursor.fetchall()]
+    
+    return rows
 
-# Inserting into residents
-def generate_room(assigned_rooms):
-    # Generate a random number between 1 and 17
-    room_id = random.randint(51, 72)
-    # Keep generating new numbers until an unassigned one is found
-    while room_id in assigned_rooms:
-        room_id = random.randint(51, 72)
-    # Add the assigned room ID to the list
-    assigned_rooms.append(room_id)
-    return room_id
+# generating rooms
+def generate_room_double(assigned_rooms):
+    doubles = getting_rooms_doubles()
+    available_doubles = list(set(doubles) - set(assigned_rooms))
 
-# print(generate_room())
+    if not available_doubles:
+        # if no unassigned room is found, return None
+        return None
+    
+    # select a random unassigned room
+    choiceDouble = random.choice(available_doubles)
+    assigned_rooms.append(choiceDouble)
+    return choiceDouble
 
-def into_residents():
+"""def generate_residents_doubles(num_residents):
+    residents = []
     assigned_rooms = []
-    for i in range(0, 21):
+
+    for i in range(num_residents):
         name = generate_random_letters()
         email = generate_random_email()
         password = generate_random_passwords()
-        room_id = generate_room(assigned_rooms)
+        room_id = generate_room_double(assigned_rooms)
 
-        mycursor.execute("INSERT INTO residents (resident_name, resident_email, resident_password, room_id, hostel_id) VALUES (%s, %s, %s, %s, 1);", (name, email, password, room_id))
-        mydb.commit()
+        if room_id:
+            residents.append((name, email, password, room_id, 1))
+
+    return residents"""
+
+def generate_residents_doubles(num_residents):
+    residents = []
+    assigned_rooms = []
+
+    for i in range(num_residents):
+        name = generate_random_letters()
+        email = generate_random_email()
+        password = generate_random_passwords()
+        
+        if i % 2 == 0:
+            # generate a new room for every other resident
+            room_id = generate_room_double(assigned_rooms)
+        else:
+            # use the same room ID as the previous resident
+            room_id = assigned_rooms[-1]
+
+        residents.append((name, email, password, room_id, 1))
+        assigned_rooms.append(room_id)
+
+    return residents
+
+
+
+
+# print(generate_residents_doubles(9))
+
+# Generating residents for single rooms
+def generate_residents_singles(num_residents):
+    residents = []
+    assigned_rooms = getting_rooms_singles()
+    random.shuffle(assigned_rooms)
+
+    if len(assigned_rooms) < num_residents:
+        # if there are not enough rooms, return an empty list
+        return []
+
+    for i in range(num_residents):
+        name = generate_random_letters()
+        email = generate_random_email()
+        password = generate_random_passwords()
+        room_id = assigned_rooms[i]
+
+        residents.append((name, email, password, room_id, 1))
+
+    return residents
+
+
+
+# print(generate_residents_singles(8))
+
+
+# Inserting the data into the database
+def into_residents():
+    residents = generate_residents_doubles(9)
+    query = "INSERT INTO residents (resident_name, resident_email, resident_password, room_id, hostel_id) VALUES (%s, %s, %s, %s, %s);"
+    mycursor.executemany(query, residents)
+    mydb.commit()
 
 into_residents()
 
