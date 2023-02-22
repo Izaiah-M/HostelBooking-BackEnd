@@ -18,9 +18,6 @@ public class Driver {
 
         SignIn user = new SignIn(resident_username, resident_password);
 
-        Statement statement; // runs SQL statement
-        String output;
-
         ResultSet result; // Holds output from SQL
         String SQL = "SELECT * FROM residents WHERE resident_name = ? AND resident_password = ?";
 
@@ -40,8 +37,11 @@ public class Driver {
 
             if (result.next()) {
                 String name = result.getString("resident_name");
-                String user_password = result.getString("resident_password");
+                System.out.println("");
                 System.out.println("Welcome back " + name + "!");
+
+                Driver hostels = new Driver();
+                hostels.getHostels();
             } else {
                 System.out.println("User not found");
             }
@@ -82,8 +82,11 @@ public class Driver {
 
             // int rowsAffected = prstmt.executeUpdate();
             // System.out.println(rowsAffected + " row(s) affected.");
-
+            System.out.println("");
             System.out.println("Welcome " + name + "!");
+
+            Driver hosts = new Driver();
+            hosts.getHostels();
 
             prstmt.close();
 
@@ -93,8 +96,44 @@ public class Driver {
 
     }
 
+    // For getting Hostels in our db
+    public void getHostels() {
+        System.out.println("");
+        System.out.println("Which hostel are you interested in?");
+        System.out.println("");
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            String dbURL = "jdbc:mysql://localhost:3306/hostel_management_system";
+            Connection dbConnection = DriverManager.getConnection(dbURL, username, password);
+            Statement stmt = dbConnection.createStatement();
+
+            String query = "SELECT hostel_id, hostel_name FROM hostels";
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                int id = rs.getInt("hostel_id");
+                String name = rs.getString("hostel_name");
+                System.out.println(id + ". " + name);
+            }
+
+            rs.close();
+            stmt.close();
+            dbConnection.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
     public static void main(String[] args) {
         // Driver trial = new Driver();
+
+        // trial.getHostels();
 
         // trial.insertResident();
 
