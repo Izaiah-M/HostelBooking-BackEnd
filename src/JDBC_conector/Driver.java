@@ -13,7 +13,7 @@ public class Driver {
     private String password = "";
     Scanner scanner = new Scanner(System.in);
 
-    // Getting Info method.
+    // for signing in the user.
     public void authenticateUSer(String resident_username, String resident_password) {
 
         SignIn user = new SignIn(resident_username, resident_password);
@@ -41,8 +41,7 @@ public class Driver {
             if (result.next()) {
                 String name = result.getString("resident_name");
                 String user_password = result.getString("resident_password");
-                System.out.println("Name: " + name);
-                System.out.println("Password: " + user_password);
+                System.out.println("Welcome back " + name + "!");
             } else {
                 System.out.println("User not found");
             }
@@ -54,6 +53,7 @@ public class Driver {
         }
     }
 
+    // For inserting a new user/resident to the database.
     public void insertResident() {
 
         try {
@@ -64,21 +64,26 @@ public class Driver {
             Connection dbConnection = DriverManager.getConnection(dbURL, username, password);
             PreparedStatement prstmt;
 
-            System.out.println("Enter name: ");
+            System.out.println("Enter full name: ");
             String name = scanner.nextLine();
-            System.out.println("Enter : ");
+            System.out.println("Enter password: ");
             String password = scanner.nextLine();
+            System.out.println("Enter email: ");
+            String email = scanner.nextLine();
 
-            String query = "INSERT INTO residents (resident_name, resident_password) VALUES (?, ?)";
+            String query = "INSERT INTO residents (resident_name, resident_password, resident_email) VALUES (?, ?, ?)";
 
             // Adding the stuff to the DB
             prstmt = dbConnection.prepareStatement(query);
 
             prstmt.setString(1, name);
             prstmt.setString(2, password);
+            prstmt.setString(3, email);
 
-            int rowsAffected = prstmt.executeUpdate();
-            System.out.println(rowsAffected + " row(s) affected.");
+            // int rowsAffected = prstmt.executeUpdate();
+            // System.out.println(rowsAffected + " row(s) affected.");
+
+            System.out.println("Welcome " + name + "!");
 
             prstmt.close();
 

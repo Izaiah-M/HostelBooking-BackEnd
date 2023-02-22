@@ -30,10 +30,13 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("SIGN UPP!!");
+                    Driver signup = new Driver();
+                    signup.insertResident();
+
                     break;
 
                 default:
+                    System.out.println("Pardon?");
                     break;
             }
         }
