@@ -1,2 +1,0 @@
-
-print(getting_rooms())

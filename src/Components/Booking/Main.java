@@ -2,6 +2,8 @@ package Components.Booking;
 
 import java.util.Scanner;
 
+import JDBC_conector.Driver;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -22,7 +24,8 @@ public class Main {
                     String password = scanner.next();
 
                     // Passing the given details to our signIn class for authentication.
-                    SignIn signin = new SignIn(name, password);
+                    Driver auth = new Driver();
+                    auth.authenticateUSer(name, password);
 
                     break;
 

@@ -171,6 +171,6 @@ def into_residents():
     mycursor.executemany(query, residents)
     mydb.commit()
 
-into_residents()
+# into_residents()
 
 

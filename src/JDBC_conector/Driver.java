@@ -10,13 +10,13 @@ import Components.Booking.SignIn;
 public class Driver {
 
     private String username = "root";
-    private String password = "#Admin123";
+    private String password = "";
     Scanner scanner = new Scanner(System.in);
 
     // Getting Info method.
-    public void authenticateUSer() {
+    public void authenticateUSer(String resident_username, String resident_password) {
 
-        SignIn user = new SignIn();
+        SignIn user = new SignIn(resident_username, resident_password);
 
         Statement statement; // runs SQL statement
         String output;
@@ -35,16 +35,17 @@ public class Driver {
             prstmt.setString(1, user.getUsername());
             prstmt.setString(2, user.getPassword());
             // Running the query
-            result = prstmt.executeQuery(SQL); // Holds the output from sql
+            // result = prstmt.executeQuery(SQL); // Holds the output from sql
+            result = prstmt.executeQuery();
 
-            // if (rs.next()) {
-            // String email = rs.getString("email");
-            // String password = rs.getString("password");
-            // System.out.println("Email: " + email);
-            // System.out.println("Password: " + password);
-            // } else {
-            // System.out.println("User not found");
-            // }
+            if (result.next()) {
+                String name = result.getString("resident_name");
+                String user_password = result.getString("resident_password");
+                System.out.println("Name: " + name);
+                System.out.println("Password: " + user_password);
+            } else {
+                System.out.println("User not found");
+            }
 
             prstmt.close();
 
@@ -53,7 +54,7 @@ public class Driver {
         }
     }
 
-    public void insertHostel() {
+    public void insertResident() {
 
         try {
 
@@ -63,18 +64,18 @@ public class Driver {
             Connection dbConnection = DriverManager.getConnection(dbURL, username, password);
             PreparedStatement prstmt;
 
-            System.out.println("Enter name of Hostel: ");
+            System.out.println("Enter name: ");
             String name = scanner.nextLine();
-            System.out.println("Enter Hostel location: ");
-            String location = scanner.nextLine();
+            System.out.println("Enter : ");
+            String password = scanner.nextLine();
 
-            String query = "INSERT INTO hostel_table (hostel_name, hostel_location, manager_id) VALUES (?, ?, NULL)";
+            String query = "INSERT INTO residents (resident_name, resident_password) VALUES (?, ?)";
 
             // Adding the stuff to the DB
             prstmt = dbConnection.prepareStatement(query);
 
             prstmt.setString(1, name);
-            prstmt.setString(2, location);
+            prstmt.setString(2, password);
 
             int rowsAffected = prstmt.executeUpdate();
             System.out.println(rowsAffected + " row(s) affected.");
@@ -88,8 +89,10 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        Driver trial = new Driver();
+        // Driver trial = new Driver();
 
-        trial.insertHostel();
+        // trial.insertResident();
+
+        // trial.authenticateUSer("njp", "b2gmzkuj");
     }
 }
