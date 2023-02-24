@@ -39,6 +39,7 @@ public class Driver {
                 String name = result.getString("resident_name");
                 System.out.println("");
                 System.out.println("Welcome back " + name + "!");
+                System.out.println("");
 
                 Driver hostels = new Driver();
                 hostels.getHostels();

@@ -36,7 +36,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Pardon?");
+                    System.out.println("Input not recognized");
                     break;
             }
         }
