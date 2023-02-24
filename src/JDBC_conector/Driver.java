@@ -120,6 +120,39 @@ public class Driver {
                 String name = rs.getString("hostel_name");
                 System.out.println(id + ". " + name);
             }
+            System.out.println("");
+
+            // For when a choice is made.
+            String chosenHostel = scanner.nextLine();
+
+            // String HostelStatus = rs.getString("hostel_status");
+
+            String newSQL = "SELECT * FROM rooms WHERE hostel_id = ? AND room_status != 'Booked' AND room_status != 'Under maintenance'";
+
+            PreparedStatement prstmt = dbConnection.prepareStatement(newSQL);
+
+            prstmt.setString(1, chosenHostel);
+
+            ResultSet result = prstmt.executeQuery();
+
+            if (result.next()) {
+                while (result.next()) {
+
+                    int room_no = result.getInt("room_id");
+                    String room_type = result.getString("room_type");
+                    int price = result.getInt("price");
+
+                    System.out.println("********************************");
+                    System.out.println("Room number: " + room_no);
+                    System.out.println("Room type: " + room_type);
+                    System.out.println("Room price: " + price);
+                    System.out.println("*********************************");
+                    System.out.println("");
+                }
+
+            }
+
+            System.out.println("Sorry, this hostel is Fully Booked!");
 
             rs.close();
             stmt.close();
@@ -128,6 +161,9 @@ public class Driver {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void selectedRoom(String Choice) {
 
     }
 
