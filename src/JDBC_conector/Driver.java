@@ -150,9 +150,9 @@ public class Driver {
                     System.out.println("");
                 }
 
+            } else {
+                System.out.println("Sorry, this hostel is Fully Booked!");
             }
-
-            System.out.println("Sorry, this hostel is Fully Booked!");
 
             rs.close();
             stmt.close();
