@@ -150,6 +150,8 @@ public class Driver {
                     System.out.println("");
                 }
 
+                // continue from in here...after they choose the room.
+
             } else {
                 System.out.println("Sorry, this hostel is Fully Booked!");
             }
